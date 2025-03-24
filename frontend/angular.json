@@ -5,10 +5,10 @@
   },
   "newProjectRoot": "projects",
   "projects": {
-    "demo": {
+    "ai-crm-frontend": {
       "architect": {
         "build": {
-          "builder": "@angular/build:application",
+          "builder": "@angular-devkit/build-angular:application",
           "configurations": {
             "development": {
               "extractLicenses": false,
@@ -29,21 +29,22 @@
             "assets": [],
             "index": "src/index.html",
             "browser": "src/main.ts",
-            "outputPath": "dist/demo",
+            "outputPath": "dist/ai-crm-frontend",
             "polyfills": ["zone.js"],
             "scripts": [],
-            "styles": ["src/global_styles.css"],
-            "tsConfig": "tsconfig.app.json"
+            "styles": ["src/tyles.scss"],
+            "tsConfig": "tsconfig.app.json",
+            "inlineStyleLanguage": "scss"
           }
         },
         "serve": {
-          "builder": "@angular/build:dev-server",
+          "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "development": {
-              "buildTarget": "demo:build:development"
+              "buildTarget": "ai-crm-frontend:build:development"
             },
             "production": {
-              "buildTarget": "demo:build:production"
+              "buildTarget": "ai-crm-frontend:build:production"
             }
           },
           "defaultConfiguration": "development"
@@ -52,7 +53,11 @@
       "prefix": "app",
       "projectType": "application",
       "root": "",
-      "schematics": {},
+      "schematics": {
+        "@schematics/angular:component": {
+          "style": "scss"
+        }
+      },
       "sourceRoot": "src"
     }
   },
