@@ -32,7 +32,7 @@
             "outputPath": "dist/ai-crm-frontend",
             "polyfills": ["zone.js"],
             "scripts": [],
-            "styles": ["src/tyles.scss"],
+            "styles": ["src/styles.scss"],
             "tsConfig": "tsconfig.app.json",
             "inlineStyleLanguage": "scss"
           }
