@@ -32,7 +32,10 @@
             "outputPath": "dist/ai-crm-frontend",
             "polyfills": ["zone.js"],
             "scripts": [],
-            "styles": ["src/styles.scss"],
+            "styles": [
+              "@angular/material/prebuilt-themes/azure-blue.css",
+              "src/styles.scss"
+            ],
             "tsConfig": "tsconfig.app.json",
             "inlineStyleLanguage": "scss"
           }

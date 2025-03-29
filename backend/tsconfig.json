@@ -1,0 +1,60 @@
+{
+    "compilerOptions": {
+      "target": "ES2022",
+      "module": "ES2022",
+      "lib": ["ES2022", "DOM"],
+      "outDir": "./dist",
+      "rootDir": "./src",
+      
+      // Strict Typing
+      "strict": true,
+      "noImplicitAny": true,
+      "strictNullChecks": true,
+      "strictFunctionTypes": true,
+      "strictBindCallApply": true,
+      "strictPropertyInitialization": true,
+      
+      // Module Resolution
+      "moduleResolution": "node",
+      "esModuleInterop": true,
+      "resolveJsonModule": true,
+      
+      // Project Specific Configurations
+      "allowSyntheticDefaultImports": true,
+      "importHelpers": true,
+      
+      // Additional Checks
+      "noUnusedLocals": true,
+      "noUnusedParameters": true,
+      "noImplicitReturns": true,
+      "noFallthroughCasesInSwitch": true,
+      
+      // Advanced Options
+      "skipLibCheck": true,
+      "forceConsistentCasingInFileNames": true,
+      
+      // Source Map Support
+      "sourceMap": true,
+      "inlineSources": true,
+      
+      // MongoDB and Mongoose Compatibility
+      "strictNullChecks": true,
+      "allowUnknownExport": true,
+      
+      // Firebase and External Library Support
+      "experimentalDecorators": true,
+      "emitDecoratorMetadata": true
+    },
+    "ts-node": {
+      "esm": true,
+      "experimentalSpecifierResolution": "node"
+    },
+    "include": [
+      "src/**/*"
+    ],
+    "exclude": [
+      "node_modules",
+      "**/*.spec.ts",
+      "dist"
+    ]
+  }
