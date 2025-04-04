@@ -1,11 +1,12 @@
-<div class="login-container">
-  <mat-card class="login-card">
+
+<div class="register-container">
+  <mat-card class="register-card">
     <mat-card-header>
-      <mat-card-title>AI CRM Login</mat-card-title>
+      <mat-card-title>Create an Account</mat-card-title>
     </mat-card-header>
 
     <mat-card-content>
-      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+      <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
         @if (errorMessage()) {
           <div class="error-message">
             {{errorMessage()}}
@@ -16,7 +17,7 @@
           <mat-label>Email</mat-label>
           <input matInput formControlName="email" type="email" required>
           <mat-icon matSuffix>email</mat-icon>
-          @if (loginForm.get('email')?.invalid && loginForm.get('email')?.touched) {
+          @if (registerForm.get('email')?.invalid && registerForm.get('email')?.touched) {
             <mat-error>Please enter a valid email</mat-error>
           }
         </mat-form-field>
@@ -37,8 +38,25 @@
           >
             <mat-icon>{{hidePassword() ? 'visibility_off' : 'visibility'}}</mat-icon>
           </button>
-          @if (loginForm.get('password')?.invalid && loginForm.get('password')?.touched) {
-            <mat-error>Password is required</mat-error>
+          @if (registerForm.get('password')?.invalid && registerForm.get('password')?.touched) {
+            <mat-error>
+              Password must be at least 6 characters
+            </mat-error>
+          }
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="form-field">
+          <mat-label>Confirm Password</mat-label>
+          <input
+            matInput
+            formControlName="confirmPassword"
+            [type]="hidePassword() ? 'password' : 'text'"
+            required
+          >
+          @if (passwordsDoNotMatch() && registerForm.get('confirmPassword')?.touched) {
+            <mat-error>
+              Passwords must match
+            </mat-error>
           }
         </mat-form-field>
 
@@ -47,19 +65,15 @@
             mat-raised-button
             color="primary"
             type="submit"
-            [disabled]="loginForm.invalid || isLoading()"
-            class="login-button"
+            [disabled]="registerForm.invalid || isLoading()"
+            class="register-button"
           >
             @if (isLoading()) {
               <mat-spinner diameter="24"></mat-spinner>
             } @else {
-              Login
+              Create Account
             }
           </button>
-
-          <a mat-button routerLink="/auth/forgot-password" class="forgot-password">
-            Forgot Password?
-          </a>
         </div>
       </form>
 
@@ -68,17 +82,17 @@
       <div class="social-login">
         <button
           mat-raised-button
-          (click)="loginWithGoogle()"
+          (click)="registerWithGoogle()"
           [disabled]="isLoading()"
           class="google-button"
         >
           <mat-icon>login</mat-icon>
-          Login with Google
+          Sign up with Google
         </button>
 
-        <div class="register-link">
-          Don't have an account?
-          <a routerLink="/auth/register">Register</a>
+        <div class="login-link">
+          Already have an account?
+          <a routerLink="/auth/login">Login</a>
         </div>
       </div>
     </mat-card-content>

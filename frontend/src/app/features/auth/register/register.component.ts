@@ -1,4 +1,3 @@
-// src/app/features/auth/login/login.component.ts
 import { Component, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
@@ -14,8 +13,9 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatDividerModule } from '@angular/material/divider';
 
+
 @Component({
-  selector: 'app-login',
+  selector: 'app-register',
   standalone: true,
   imports: [
     CommonModule,
@@ -29,10 +29,10 @@ import { MatDividerModule } from '@angular/material/divider';
     MatProgressSpinnerModule,
     MatDividerModule
   ],
-  templateUrl: `./login.component.html`,
-  styleUrls: [`./login.component.scss`],
+  templateUrl: './register.component.html',
+  styleUrl: './register.component.scss'
 })
-export class LoginComponent {
+export class RegisterComponent {
   private fb = inject(FormBuilder);
   private authService = inject(FirebaseAuthService);
   private router = inject(Router);
@@ -41,22 +41,36 @@ export class LoginComponent {
   errorMessage = signal<string | null>(null);
   isLoading = signal<boolean>(false);
   hidePassword = signal<boolean>(true);
+  passwordsDoNotMatch = signal<boolean>(false);
 
-  loginForm: FormGroup = this.fb.group({
+  registerForm: FormGroup = this.fb.group({
     email: ['', [Validators.required, Validators.email]],
-    password: ['', [Validators.required]]
+    password: ['', [Validators.required, Validators.minLength(6)]],
+    confirmPassword: ['', [Validators.required]]
   });
 
+  constructor() {
+    // Watch for password match
+    this.registerForm.valueChanges.subscribe(() => {
+      const password = this.registerForm.get('password')?.value;
+      const confirmPassword = this.registerForm.get('confirmPassword')?.value;
+      this.passwordsDoNotMatch.set(
+        password !== confirmPassword &&
+        this.registerForm.get('confirmPassword')?.touched === true
+      );
+    });
+  }
+
   onSubmit(): void {
-    if (this.loginForm.invalid) {
+    if (this.registerForm.invalid || this.passwordsDoNotMatch()) {
       return;
     }
 
-    const { email, password } = this.loginForm.value;
+    const { email, password } = this.registerForm.value;
     this.isLoading.set(true);
     this.errorMessage.set(null);
 
-    this.authService.login(email, password).subscribe({
+    this.authService.register(email, password).subscribe({
       next: () => {
         this.isLoading.set(false);
         this.router.navigate(['/dashboard']);
@@ -68,7 +82,7 @@ export class LoginComponent {
     });
   }
 
-  loginWithGoogle(): void {
+  registerWithGoogle(): void {
     this.isLoading.set(true);
     this.errorMessage.set(null);
 
@@ -90,15 +104,15 @@ export class LoginComponent {
 
   private getErrorMessage(errorCode: string): string {
     switch (errorCode) {
-      case 'auth/user-not-found':
-      case 'auth/wrong-password':
-        return 'Invalid email or password';
-      case 'auth/too-many-requests':
-        return 'Too many unsuccessful login attempts. Please try again later.';
-      case 'auth/user-disabled':
-        return 'This account has been disabled';
+      case 'auth/email-already-in-use':
+        return 'Email is already in use. Please try a different email or login.';
+      case 'auth/invalid-email':
+        return 'Invalid email address.';
+      case 'auth/weak-password':
+        return 'Password is too weak. Please use a stronger password.';
       default:
-        return 'An error occurred during login. Please try again.';
+        return 'Registration failed. Please try again.';
     }
   }
+
 }
